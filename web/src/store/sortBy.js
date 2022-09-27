@@ -1,7 +1,7 @@
-import { entity } from 'simpler-state'
+import { entity } from 'simpler-state';
 
-export const sortBy = entity('-createdAt')
+export const sortBy = entity('-createdAt');
 
 export const setSortBy = (field) => {
-  sortBy.set(field)
-}
+  sortBy.set(field);
+};

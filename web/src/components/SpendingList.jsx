@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { FiDollarSign } from "react-icons/fi";
-import { DateTime } from "luxon";
+import React, { useState, useEffect } from 'react';
+import { FiDollarSign } from 'react-icons/fi';
+import { DateTime } from 'luxon';
 import omitBy from 'lodash/omitBy';
-import Loader from "./Loader";
-import { currencyCode } from '../store/currencyFilter'
-import { sortBy } from '../store/sortBy'
+import Loader from './Loader';
+import { currencyCode } from '../store/currencyFilter';
+import { sortBy } from '../store/sortBy';
 import {
   ErrorMessage,
   Spending,
@@ -12,39 +12,38 @@ import {
   TextWrapper,
   Amount,
   AmountWrapper,
-} from "../styles/ComponentStyles";
+} from '../styles/ComponentStyles';
 
 export default function SpendingList({ spendings, setSpendings }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const currencyCodeState = currencyCode.use()
-  const sortByState = sortBy.use()
+  const currencyCodeState = currencyCode.use();
+  const sortByState = sortBy.use();
 
   useEffect(() => {
     setLoading(true);
-    
-    const url = new URL('http://localhost:5001/spendings')
+
+    const url = new URL('http://localhost:5001/spendings');
 
     let ascending = true;
     let orderBy = sortByState;
 
-
     if (sortByState.startsWith('-')) {
       ascending = false;
-      orderBy = sortByState.slice(1);      
+      orderBy = sortByState.slice(1);
     }
 
-    const currency = currencyCodeState === 'all' ? undefined: currencyCodeState;
+    const currency = currencyCodeState === 'all' ? undefined : currencyCodeState;
 
-    const params = {orderBy, ascending, currency}
+    const params = { orderBy, ascending, currency };
 
     url.search = new URLSearchParams({
-      ...omitBy(params, (value) => !value)
+      ...omitBy(params, (value) => !value),
     }).toString();
 
     fetch(url, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
     })
       .then(async (res) => {
         const body = await res.json();
@@ -77,16 +76,18 @@ export default function SpendingList({ spendings, setSpendings }) {
         </ErrorMessage>
       )}
       {!spendings.length && !error && (
-        <h1 style={{ textAlign: "center", marginTop: "4rem" }}>
-          Yay!{" "}
+        <h1 style={{ textAlign: 'center', marginTop: '4rem' }}>
+          Yay!
+          {' '}
           <span role="img" aria-label="jsx-a11y/accessible-emoji">
             🎉
-          </span>{" "}
+          </span>
+          {' '}
           No spendings!
         </h1>
       )}
-      {spendings.length > 0 &&
-        spendings.map((spending) => (
+      {spendings.length > 0
+        && spendings.map((spending) => (
           <Spending key={spending.id}>
             <IconWrapper>
               <FiDollarSign color="var(--color-blue)" />
@@ -95,7 +96,7 @@ export default function SpendingList({ spendings, setSpendings }) {
               <h3>{spending.description}</h3>
               <p>
                 {DateTime.fromISO(spending.spent_at).toFormat(
-                  "t - MMMM dd, yyyy"
+                  't - MMMM dd, yyyy',
                 )}
               </p>
             </TextWrapper>

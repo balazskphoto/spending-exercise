@@ -8,15 +8,13 @@ export default function App() {
   const [spendings, setSpendings] = useState([]);
 
   return (
-    <>
-      <Layout>
-        <Form />
-        <FiltersAndOrderings />
-        <SpendingList
-          spendings={spendings}
-          setSpendings={setSpendings}
-        />
-      </Layout>
-    </>
+    <Layout>
+      <Form />
+      <FiltersAndOrderings />
+      <SpendingList
+        spendings={spendings}
+        setSpendings={setSpendings}
+      />
+    </Layout>
   );
 }

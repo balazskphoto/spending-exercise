@@ -26,10 +26,8 @@ export const CurrencyButton = styled.button`
   font-family: var(--font-family);
   font-size: 20px;
   cursor: pointer;
-  background-color: ${(p) =>
-    p.name === p.currencyFilter ? '#d1e7fb' : 'var(--color-white)'};
-  color: ${(p) =>
-    p.name === p.currencyFilter ? 'var(--color-blue)' : 'inherit'};
+  background-color: ${(p) => (p.name === p.currencyFilter ? '#d1e7fb' : 'var(--color-white)')};
+  color: ${(p) => (p.name === p.currencyFilter ? 'var(--color-blue)' : 'inherit')};
   font-weight: ${(p) => (p.name === p.currencyFilter ? '700' : '400')};
   border-radius: 8px;
   padding: 6px 12px;
