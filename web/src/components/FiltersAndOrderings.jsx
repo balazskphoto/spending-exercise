@@ -1,22 +1,14 @@
-import React from 'react';
-import { setCurrencyCode } from '../store/currencyFilter';
-import { setSortBy } from '../store/sortBy';
+import React from "react";
+import { setCurrencyCode } from "../store/currencyFilter";
+import { setSortBy } from "../store/sortBy";
 
-import {
-  FiltersWrapper, Orderings, CurrencyFilters, CurrencyButton,
-} from '../styles/ComponentStyles';
+import { FiltersWrapper, Orderings, CurrencyFilters, CurrencyButton } from "../styles/ComponentStyles";
 
 export default function CurrencyFilter() {
-  function handleSortByChange(e) {
-    const { value } = e.target;
-
-    setSortBy(value);
-  }
-
   return (
     <FiltersWrapper>
       <Orderings>
-        <select onChange={handleSortByChange}>
+        <select onChange={(e) => setSortBy(e.target.value)}>
           <option value="-createdAt">Sort by Date descending (default)</option>
           <option value="createdAt">Sort by Date ascending</option>
           <option value="-amount">Sort by Amount descending</option>
@@ -24,26 +16,14 @@ export default function CurrencyFilter() {
         </select>
       </Orderings>
       <CurrencyFilters>
-        <li onClick={() => setCurrencyCode('all')}>
-          <CurrencyButton
-            name=""
-          >
-            ALL
-          </CurrencyButton>
+        <li onClick={() => setCurrencyCode("all")}>
+          <CurrencyButton name="">ALL</CurrencyButton>
         </li>
-        <li onClick={() => setCurrencyCode('HUF')}>
-          <CurrencyButton
-            name="HUF"
-          >
-            HUF
-          </CurrencyButton>
+        <li onClick={() => setCurrencyCode("HUF")}>
+          <CurrencyButton name="HUF">HUF</CurrencyButton>
         </li>
-        <li onClick={() => setCurrencyCode('USD')}>
-          <CurrencyButton
-            name="USD"
-          >
-            USD
-          </CurrencyButton>
+        <li onClick={() => setCurrencyCode("USD")}>
+          <CurrencyButton name="USD">USD</CurrencyButton>
         </li>
       </CurrencyFilters>
     </FiltersWrapper>
