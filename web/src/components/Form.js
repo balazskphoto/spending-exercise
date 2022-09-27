@@ -19,6 +19,16 @@ export default function Form() {
     });
   }
 
+  function handleSubmit(e) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state)
+    };
+
+    fetch('http://localhost:5001/spending', requestOptions)
+  }
+
   return (
     <>
       <FormStyles>
@@ -44,7 +54,7 @@ export default function Form() {
           <option value='HUF'>HUF</option>
           <option value='USD'>USD</option>
         </SelectStyles>
-        <InputStyles type='submit' value='Save' />
+        <InputStyles type='button' value='Save' onClick={handleSubmit} />
       </FormStyles>
     </>
   );

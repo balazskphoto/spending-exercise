@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FiDollarSign } from "react-icons/fi";
 import { DateTime } from "luxon";
+import omitBy from 'lodash/omitBy';
 import Loader from "./Loader";
+import { currencyCode } from '../store/currencyFilter'
+import { sortBy } from '../store/sortBy'
 import {
   ErrorMessage,
   Spending,
@@ -14,10 +17,32 @@ import {
 export default function SpendingList({ spendings, setSpendings }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const currencyCodeState = currencyCode.use()
+  const sortByState = sortBy.use()
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5001/spendings`, {
+    
+    const url = new URL('http://localhost:5001/spendings')
+
+    let ascending = true;
+    let orderBy = sortByState;
+
+
+    if (sortByState.startsWith('-')) {
+      ascending = false;
+      orderBy = sortByState.slice(1);      
+    }
+
+    const currency = currencyCodeState === 'all' ? undefined: currencyCodeState;
+
+    const params = {orderBy, ascending, currency}
+
+    url.search = new URLSearchParams({
+      ...omitBy(params, (value) => !value)
+    }).toString();
+
+    fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -40,7 +65,7 @@ export default function SpendingList({ spendings, setSpendings }) {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [currencyCodeState, sortByState]);
 
   if (loading) return <Loader />;
 
