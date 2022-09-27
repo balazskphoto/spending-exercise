@@ -17,7 +17,7 @@ export default function SpendingList({ spendings, setSpendings }) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/spendings`, {
+    fetch(`http://localhost:5001/spendings`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
