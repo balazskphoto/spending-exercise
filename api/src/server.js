@@ -7,6 +7,8 @@ const Validator = require('validatorjs');
 
 const validationRules = require('./validation/rules');
 
+const prisma = new PrismaClient();
+
 const mapDBSpending = (dbSpending) => ({
   id: dbSpending.id,
   description: dbSpending.description,
@@ -20,14 +22,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/spendings', async (req, res) => {
-  const prisma = new PrismaClient();
-
-  const { orderBy } = req.query;
-  const { ascending } = req.query;
-  const currencyFilter = req.query.currency;
+  const { orderBy, ascending, currency } = req.query;
 
   const spendings = await prisma.spending.findMany({
-    where: currencyFilter ? { currency: { code: currencyFilter } } : undefined,
+    where: currency ? { currency: { code: currency } } : undefined,
     orderBy: orderBy ? { [orderBy]: ascending ? 'asc' : 'desc' } : undefined,
   });
 
@@ -43,8 +41,6 @@ app.post('/spending', async (req, res) => {
       message: "Spending didn't pass validation",
     });
   }
-
-  const prisma = new PrismaClient();
 
   const createdEntry = await prisma.spending.create(
     {
