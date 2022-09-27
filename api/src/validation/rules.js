@@ -1,7 +1,7 @@
 const spendingCreationRules = {
   description: ['required', 'string'],
   amount: ['required', 'numeric'],
-  currency: ['string', { in: ['USD', 'HUF'] }],
+  currency: ['required', 'string', { in: ['USD', 'HUF'] }],
 };
 
 module.exports = {
