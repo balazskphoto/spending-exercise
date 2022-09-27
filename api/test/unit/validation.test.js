@@ -22,6 +22,15 @@ describe('spendingCreationRules', () => {
       shouldPass: false,
     },
     {
+      description: 'negative amount fails validation',
+      objectToCheck: {
+        description: 'A fair description',
+        currency: 'HUF',
+        amount: '-1000',
+      },
+      shouldPass: false,
+    },
+    {
       description: 'missing description fails validation',
       objectToCheck: {
         amount: '1000',
