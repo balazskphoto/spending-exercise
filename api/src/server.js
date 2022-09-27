@@ -4,14 +4,23 @@ const express = require("express");
 const statusCodes = require("http-status-codes");
 const { PrismaClient } = require("@prisma/client");
 let Validator = require('validatorjs');
+
 const validationRules = require("./validation/rules.js");
+
+const mapDBSpending = (dbSpending) => ({
+  id: dbSpending.id,
+  description: dbSpending.description,
+  currency: dbSpending.currencyCode,
+  amount: parseFloat(dbSpending.amount),
+  spent_at: dbSpending.createdAt,
+});
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/spendings", async (req, res) => {
-  const prisma = new PrismaClient()
+  const prisma = new PrismaClient();
 
   const orderBy = req.query.orderBy;
   const ascending = req.query.ascending;
@@ -22,12 +31,7 @@ app.get("/spendings", async (req, res) => {
     orderBy: orderBy ? { [orderBy]: ascending ? 'asc': 'desc'} : undefined,
   });
 
-  res.send(spendings.map((dbSpending) => ({
-    description: dbSpending.description,
-    currency: dbSpending.currencyCode,
-    amount: dbSpending.amount,
-    spent_at: dbSpending.createdAt,
-  })));
+  res.send(spendings.map(mapDBSpending));
 });
 
 app.post("/spending", async (req, res) => {
@@ -42,7 +46,7 @@ app.post("/spending", async (req, res) => {
 
   const prisma = new PrismaClient();
 
-  await prisma.spending.create(
+  const createdEntry = await prisma.spending.create(
     {
       data: {
         description: spending.description,
@@ -55,7 +59,7 @@ app.post("/spending", async (req, res) => {
       }
     });
 
-  return res.status(statusCodes.CREATED).send();
+  res.status(statusCodes.CREATED).send(mapDBSpending(createdEntry));
 });
 
 module.exports = app;

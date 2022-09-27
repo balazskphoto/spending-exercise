@@ -16,6 +16,7 @@ const load = async () => {
         description: 'Hungarian Forint'
       }]
     })
+    
     console.log('Added default currencies')
   } catch (e) {
     console.error(e)
