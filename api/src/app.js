@@ -1,7 +1,8 @@
-const server = require("./server");
+const server = require('./server');
 
 const port = 5001;
 
 server.listen(port, () => {
-  console.log(`Listening on port ${port}`)
+  // eslint-disable-next-line no-console
+  console.log(`Listening on port ${port}`);
 });

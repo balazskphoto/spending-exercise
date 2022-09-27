@@ -1,48 +1,47 @@
-const request = require("supertest");
-const { PrismaClient } = require("@prisma/client");
-const statusCodes = require("http-status-codes");
+const request = require('supertest');
+const { PrismaClient } = require('@prisma/client');
+const statusCodes = require('http-status-codes');
 
-const server = require("../../src/server");
+const server = require('../../src/server');
 
-describe("GET /spendings", () => {
+describe('GET /spendings', () => {
   const prisma = new PrismaClient();
 
-const clearDB = async() => {
-  const deleteSpendings = prisma.spending.deleteMany();
-  const deletCurrencies = prisma.currency.deleteMany();
+  const clearDB = async () => {
+    const deleteSpendings = prisma.spending.deleteMany();
+    const deletCurrencies = prisma.currency.deleteMany();
 
-  await prisma.$transaction([
-    deleteSpendings,
-    deletCurrencies,
-  ])
+    await prisma.$transaction([
+      deleteSpendings,
+      deletCurrencies,
+    ]);
 
-  await prisma.$disconnect();
-}
-
+    await prisma.$disconnect();
+  };
 
   beforeAll(async () => {
     await clearDB();
     await prisma.currency.createMany({
       data: [{
         code: 'USD',
-        description: 'US Dollar'
+        description: 'US Dollar',
       },
       {
         code: 'HUF',
-        description: 'Hungarian Forint'
-      }]
+        description: 'Hungarian Forint',
+      }],
     });
-  
+
     await prisma.spending.createMany({
       data: [
         {
-          description: "Test spending",
-          currencyCode: "HUF",
+          description: 'Test spending',
+          currencyCode: 'HUF',
           amount: 100,
         },
         {
-          description: "Another test spending",
-          currencyCode: "USD",
+          description: 'Another test spending',
+          currencyCode: 'USD',
           amount: 200,
         },
       ],
@@ -54,101 +53,101 @@ const clearDB = async() => {
   const usdSpending = {
     id: expect.any(Number),
     amount: 200,
-    currency: "USD",
-    description: "Another test spending",
+    currency: 'USD',
+    description: 'Another test spending',
     spent_at: expect.any(String),
   };
   const hufSpending = {
     id: expect.any(Number),
     amount: 100,
-    currency: "HUF",
-    description: "Test spending",
+    currency: 'HUF',
+    description: 'Test spending',
     spent_at: expect.any(String),
   };
 
-  test("returns all spendings", async () => {
+  test('returns all spendings', async () => {
     const response = await request(server)
-      .get("/spendings");
+      .get('/spendings');
 
     expect(response.statusCode).toEqual(statusCodes.OK);
     expect(response.body).toEqual(
-      [hufSpending, usdSpending]
+      [hufSpending, usdSpending],
     );
   });
 
-  test("filters currency", async () => {
+  test('filters currency', async () => {
     const response = await request(server)
-      .get("/spendings")
+      .get('/spendings')
       .query({ currency: 'HUF' });
 
     expect(response.statusCode).toEqual(statusCodes.OK);
     expect(response.body).toEqual(
-      [hufSpending]
+      [hufSpending],
     );
   });
 
-  test("sorts results", async () => {
+  test('sorts results', async () => {
     const response = await request(server)
-      .get("/spendings")
+      .get('/spendings')
       .query({ orderBy: 'amount' });
 
     expect(response.statusCode).toEqual(statusCodes.OK);
     expect(response.body).toEqual(
-      [usdSpending, hufSpending]
+      [usdSpending, hufSpending],
     );
   });
 
-  test("sorts results in ascending order", async () => {
+  test('sorts results in ascending order', async () => {
     const response = await request(server)
-      .get("/spendings")
+      .get('/spendings')
       .query({ orderBy: 'amount', ascending: true });
 
     expect(response.statusCode).toEqual(statusCodes.OK);
     expect(response.body).toEqual(
-      [hufSpending, usdSpending]
+      [hufSpending, usdSpending],
     );
   });
 });
 
-describe("POST /spending", () => {
-  const prisma = new PrismaClient()
+describe('POST /spending', () => {
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     await prisma.currency.createMany({
       data: [{
         code: 'USD',
-        description: 'US Dollar'
+        description: 'US Dollar',
       },
       {
         code: 'HUF',
-        description: 'Hungarian Forint'
-      }]
+        description: 'Hungarian Forint',
+      }],
     });
   });
 
   afterEach(async () => {
-    await prisma.spending.deleteMany()
+    await prisma.spending.deleteMany();
     await prisma.$disconnect();
   });
 
   afterAll(async () => {
-    const deleteSpendings = prisma.spending.deleteMany()
-    const deletCurrencies = prisma.currency.deleteMany()
-  
+    const deleteSpendings = prisma.spending.deleteMany();
+    const deletCurrencies = prisma.currency.deleteMany();
+
     await prisma.$transaction([
       deleteSpendings,
       deletCurrencies,
-    ])
-  
+    ]);
+
     await prisma.$disconnect();
   });
 
-  test("creates a new spending", async () => {
+  test('creates a new spending', async () => {
     const response = await request(server)
-      .post("/spending")
+      .post('/spending')
       .send({
-        description: "Created spending",
-        currency: "USD",
+        description: 'Created spending',
+        currency: 'USD',
         amount: 500.5,
       });
 
@@ -157,29 +156,29 @@ describe("POST /spending", () => {
       {
         id: expect.any(Number),
         amount: 500.5,
-        currency: "USD",
-        description: "Created spending",
+        currency: 'USD',
+        description: 'Created spending',
         spent_at: expect.any(String),
-      }
+      },
     );
     expect(await prisma.spending.findMany()).toEqual(
       [
         {
           id: expect.any(Number),
-          currencyCode: "USD",
+          currencyCode: 'USD',
           amount: expect.any(Object),
-          description: "Created spending",
+          description: 'Created spending',
           createdAt: expect.any(Date),
-      }]
+        }],
     );
   });
 
-  test("validates currency", async () => {
+  test('validates currency', async () => {
     const response = await request(server)
-      .post("/spending")
+      .post('/spending')
       .send({
-        description: "Created spending",
-        currency: "UNSUPPORTED",
+        description: 'Created spending',
+        currency: 'UNSUPPORTED',
         amount: 500.5,
       });
 
@@ -187,15 +186,15 @@ describe("POST /spending", () => {
     expect(response.body).toEqual(
       {
         message: "Spending didn't pass validation",
-      }
+      },
     );
   });
 
-  test("validates required fields", async () => {
+  test('validates required fields', async () => {
     const response = await request(server)
-      .post("/spending")
+      .post('/spending')
       .send({
-        currency: "UNSUPPORTED",
+        currency: 'UNSUPPORTED',
         amount: 500.5,
       });
 
@@ -203,7 +202,7 @@ describe("POST /spending", () => {
     expect(response.body).toEqual(
       {
         message: "Spending didn't pass validation",
-      }
+      },
     );
   });
 });
