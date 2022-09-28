@@ -22,7 +22,7 @@ const successHandler = (result) => {
 const errorHandler = (error) => {
   const statusCode = error.response?.status;
 
-  if (statusCode && statusCode > 299) {
+  if (!statusCode || statusCode > 299) {
     toast.error(error.response?.data?.message ?? error.message, {
       position: 'top-right',
       hideProgressBar: true,
