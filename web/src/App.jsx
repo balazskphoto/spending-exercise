@@ -8,12 +8,13 @@ import Layout from "./components/Layout";
 
 export default function App() {
   const [spendings, setSpendings] = useState([]);
+  const [reloadFlag, setReloadFlag] = useState(true);
 
   return (
     <Layout>
-      <SpendingForm />
+      <SpendingForm onSpendingCreated={() => setReloadFlag(!reloadFlag)} />
       <FiltersAndOrderings />
-      <SpendingList spendings={spendings} setSpendings={setSpendings} />
+      <SpendingList spendings={spendings} setSpendings={setSpendings} reload={reloadFlag} />
       <ToastContainer />
     </Layout>
   );

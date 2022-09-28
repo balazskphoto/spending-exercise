@@ -8,7 +8,7 @@ import { sortBy } from "../store/sortBy";
 import SpendingsAPI from "../apis/SpendingsAPI";
 import { ErrorMessage, Spending, IconWrapper, TextWrapper, Amount, AmountWrapper } from "../styles/ComponentStyles";
 
-export default function SpendingList({ spendings, setSpendings }) {
+export default function SpendingList({ spendings, setSpendings, reload }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const currencyCodeState = currencyCode.use();
@@ -41,9 +41,11 @@ export default function SpendingList({ spendings, setSpendings }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [currencyCodeState, sortByState]);
+  }, [currencyCodeState, sortByState, reload]);
 
-  if (loading) return <Loader />;
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>

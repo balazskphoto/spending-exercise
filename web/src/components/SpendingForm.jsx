@@ -12,7 +12,7 @@ const initialState = {
   currency: "USD",
 };
 
-export default function SpendingForm() {
+export default function SpendingForm({ onSpendingCreated }) {
   const [state, setState] = useState(initialState);
 
   function handleChange(e) {
@@ -55,6 +55,7 @@ export default function SpendingForm() {
     if (validateForm()) {
       SpendingsAPI.create(state).then(() => {
         setState(initialState);
+        onSpendingCreated();
       });
     }
   }
