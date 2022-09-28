@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { InputStyles } from "../styles/InputStyles";
 import { SelectStyles } from "../styles/SelectStyles";
 import { FormStyles } from "../styles/ComponentStyles";
-import SpendingsAPI from "../apis/SpendingsAPI";
+import SpendingsAPI from "../apis/spendingsAPI";
 
 const initialState = {
   description: "",

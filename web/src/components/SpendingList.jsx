@@ -5,7 +5,7 @@ import omitBy from "lodash/omitBy";
 import Loader from "./Loader";
 import { currencyCode } from "../store/currencyFilter";
 import { sortBy } from "../store/sortBy";
-import SpendingsAPI from "../apis/SpendingsAPI";
+import SpendingsAPI from "../apis/spendingsAPI";
 import { ErrorMessage, Spending, IconWrapper, TextWrapper, Amount, AmountWrapper } from "../styles/ComponentStyles";
 
 export default function SpendingList({ spendings, setSpendings, reload }) {

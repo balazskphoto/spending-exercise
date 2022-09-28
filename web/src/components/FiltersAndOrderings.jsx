@@ -4,7 +4,7 @@ import { setSortBy } from "../store/sortBy";
 
 import { FiltersWrapper, Orderings, CurrencyFilters, CurrencyButton } from "../styles/ComponentStyles";
 
-export default function CurrencyFilter() {
+export default function FiltersAndOrderings() {
   return (
     <FiltersWrapper>
       <Orderings>

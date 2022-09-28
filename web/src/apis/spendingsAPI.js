@@ -11,10 +11,12 @@ export default {
     return response.data;
   },
   async create(spending) {
-    await api.request({
+    const response = await api.request({
       url: '/spending',
       method: 'POST',
       data: spending,
     });
+
+    return response.data;
   },
 };
