@@ -8,7 +8,7 @@ export default function FiltersAndOrderings() {
   return (
     <FiltersWrapper>
       <Orderings>
-        <select onChange={(e) => setSortBy(e.target.value)}>
+        <select onChange={(e) => setSortBy(e.target.value)} data-testid="sort-by-select">
           <option value="-createdAt">Sort by Date descending (default)</option>
           <option value="createdAt">Sort by Date ascending</option>
           <option value="-amount">Sort by Amount descending</option>
