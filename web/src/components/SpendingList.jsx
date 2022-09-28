@@ -5,6 +5,7 @@ import omitBy from "lodash/omitBy";
 import Loader from "./Loader";
 import { currencyCode } from "../store/currencyFilter";
 import { sortBy } from "../store/sortBy";
+import { SpendingsAPI } from "../apis/SpendingsAPI";
 import { ErrorMessage, Spending, IconWrapper, TextWrapper, Amount, AmountWrapper } from "../styles/ComponentStyles";
 
 export default function SpendingList({ spendings, setSpendings }) {
@@ -15,8 +16,6 @@ export default function SpendingList({ spendings, setSpendings }) {
 
   useEffect(() => {
     setLoading(true);
-
-    const url = new URL("http://localhost:5001/spendings");
 
     let ascending = true;
     let orderBy = sortByState;
@@ -30,28 +29,13 @@ export default function SpendingList({ spendings, setSpendings }) {
 
     const params = { orderBy, ascending, currency };
 
-    url.search = new URLSearchParams({
+    SpendingsAPI.get({
       ...omitBy(params, (value) => !value),
-    }).toString();
-
-    fetch(url, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
     })
-      .then(async (res) => {
-        const body = await res.json();
-        return {
-          status: res.status,
-          body,
-        };
-      })
       .then((response) => {
-        if (response.status === 200) {
-          setSpendings(response.body);
-        }
+        setSpendings(response);
       })
       .catch((err) => {
-        console.error(err);
         setError(true);
       })
       .finally(() => {

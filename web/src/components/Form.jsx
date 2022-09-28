@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { InputStyles } from "../styles/InputStyles";
 import { SelectStyles } from "../styles/SelectStyles";
 import { FormStyles } from "../styles/ComponentStyles";
+import { SpendingsAPI } from "../apis/SpendingsAPI";
 
 export default function Form() {
   const [state, setState] = useState({
@@ -20,13 +21,7 @@ export default function Form() {
   }
 
   function handleSubmit(e) {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(state),
-    };
-
-    fetch("http://localhost:5001/spending", requestOptions);
+    SpendingsAPI.create(state);
   }
 
   return (
