@@ -66,15 +66,23 @@ export default function SpendingForm({ onSpendingCreated }) {
         type="text"
         placeholder="description"
         name="description"
+        data-testid="spending-form-description-input"
         value={state.description}
         onChange={handleChange}
       />
-      <InputStyles type="number" placeholder="amount" name="amount" value={state.amount} onChange={handleChange} />
+      <InputStyles
+        type="number"
+        placeholder="amount"
+        name="amount"
+        data-testid="spending-form-amount-input"
+        value={state.amount}
+        onChange={handleChange}
+      />
       <SelectStyles name="currency" value={state.currency} onChange={handleChange}>
         <option value="HUF">HUF</option>
         <option value="USD">USD</option>
       </SelectStyles>
-      <InputStyles type="button" value="Save" onClick={handleSubmit} />
+      <InputStyles type="button" value="Save" data-testid="spending-form-save" onClick={handleSubmit} />
     </FormStyles>
   );
 }
