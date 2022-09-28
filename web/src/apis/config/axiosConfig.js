@@ -5,6 +5,20 @@ const api = axios.create({
   baseURL: 'http://localhost:5001',
 });
 
+const successHandler = (result) => {
+  if (result.status === 201) {
+    toast.success("Created new resource", {
+      position: 'top-right',
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+
+  return Promise.resolve(result);
+};
+
 const errorHandler = (error) => {
   const statusCode = error.response?.status;
 
@@ -21,6 +35,6 @@ const errorHandler = (error) => {
   return Promise.reject(error);
 };
 
-api.interceptors.response.use(undefined, (error) => errorHandler(error));
+api.interceptors.response.use(successHandler, (error) => errorHandler(error));
 
 export default api;
