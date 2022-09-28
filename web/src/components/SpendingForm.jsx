@@ -15,16 +15,16 @@ const initialState = {
 export default function SpendingForm({ onSpendingCreated }) {
   const [state, setState] = useState(initialState);
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     setState({
       ...state,
       [name]: value,
     });
-  }
+  };
 
-  function validateForm() {
+  const validateForm = () => {
     let isValid = true;
     let validationMessage;
 
@@ -49,16 +49,16 @@ export default function SpendingForm({ onSpendingCreated }) {
     }
 
     return isValid;
-  }
+  };
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     if (validateForm()) {
       SpendingsAPI.create(state).then(() => {
         setState(initialState);
         onSpendingCreated();
       });
     }
-  }
+  };
 
   return (
     <FormStyles>

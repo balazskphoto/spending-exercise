@@ -12,18 +12,18 @@ export default function Form() {
     currency: "USD",
   });
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     setState({
       ...state,
       [name]: value,
     });
-  }
+  };
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     SpendingsAPI.create(state);
-  }
+  };
 
   return (
     <FormStyles>

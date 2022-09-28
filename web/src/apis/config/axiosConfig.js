@@ -7,7 +7,7 @@ const api = axios.create({
 
 const successHandler = (result) => {
   if (result.status === 201) {
-    toast.success("Created new resource", {
+    toast.success('Created new resource', {
       position: 'top-right',
       hideProgressBar: true,
       closeOnClick: true,
