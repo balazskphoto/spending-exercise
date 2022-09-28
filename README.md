@@ -42,7 +42,7 @@ To run the backend:
 
 ```shell
 cd api
-npm i
+npm install
 npm run docker:up
 npm run migrate
 npm start
@@ -56,7 +56,7 @@ To run the frontend:
 
 ```shell
 cd web
-npm i
+npm install
 npm start
 ```
 

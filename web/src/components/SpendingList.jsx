@@ -35,7 +35,7 @@ export default function SpendingList({ spendings, setSpendings, reload }) {
       .then((response) => {
         setSpendings(response);
       })
-      .catch((err) => {
+      .catch((_err) => {
         setError(true);
       })
       .finally(() => {
