@@ -1,20 +1,20 @@
-import { api } from "./config/axiosConfig"
+import api from './config/axiosConfig';
 
-export const SpendingsAPI = {
-  get: async function (params) {
+export default {
+  async get(params) {
     const response = await api.request({
-      url: `/spendings`,
-      method: "GET",
-      params
-    })
+      url: '/spendings',
+      method: 'GET',
+      params,
+    });
 
-    return response.data
+    return response.data;
   },
-  create: async function (spending) {
+  async create(spending) {
     await api.request({
-      url: `/spending`,
-      method: "POST",
+      url: '/spending',
+      method: 'POST',
       data: spending,
-    })
+    });
   },
-}
+};

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+
 import { InputStyles } from "../styles/InputStyles";
 import { SelectStyles } from "../styles/SelectStyles";
 import { FormStyles } from "../styles/ComponentStyles";
-import { SpendingsAPI } from "../apis/SpendingsAPI";
+import SpendingsAPI from "../apis/SpendingsAPI";
 
 export default function Form() {
   const [state, setState] = useState({
@@ -38,7 +39,7 @@ export default function Form() {
         <option value="HUF">HUF</option>
         <option value="USD">USD</option>
       </SelectStyles>
-      <InputStyles type="submit" value="Save" onClick={handleSubmit} />
+      <InputStyles type="button" value="Save" onClick={handleSubmit} />
     </FormStyles>
   );
 }
